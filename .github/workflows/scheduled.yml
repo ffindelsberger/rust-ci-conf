@@ -1,3 +1,4 @@
+# Scheduled CI job is supposed to be run every day
 permissions:
   contents: read
 on:
@@ -13,6 +14,7 @@ concurrency:
 name: rolling
 jobs:
   # https://twitter.com/mycoliza/status/1571295690063753218
+  # check if crate is building on current nightly version
   nightly:
     runs-on: ubuntu-latest
     name: ubuntu / nightly
@@ -27,6 +29,7 @@ jobs:
         run: cargo generate-lockfile
       - name: cargo test --locked
         run: cargo test --locked --all-features --all-targets
+  # Build on Beta and update the dependencies and check if stuff still works
   # https://twitter.com/alcuadrado/status/1571291687837732873
   update:
     runs-on: ubuntu-latest
