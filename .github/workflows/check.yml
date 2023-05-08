@@ -32,6 +32,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # run on stable and beta, ass new lints are added frequently get ahead of the curve and fix them early
         toolchain: [stable, beta]
     steps:
       - uses: actions/checkout@v3
@@ -46,6 +47,7 @@ jobs:
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+  # Run doc to also validate that doc references to code are valid, they dont run on clippy or check
   doc:
     runs-on: ubuntu-latest
     name: nightly / doc
@@ -59,6 +61,7 @@ jobs:
         run: cargo doc --no-deps --all-features
         env:
           RUSTDOCFLAGS: --cfg docsrs
+  # As rust crates are by definition supposed to be additive, lets test every combination of features         
   hack:
     runs-on: ubuntu-latest
     name: ubuntu / stable / features
@@ -73,6 +76,7 @@ jobs:
       # intentionally no target specifier; see https://github.com/jonhoo/rust-ci-conf/pull/4
       - name: cargo hack
         run: cargo hack --feature-powerset check
+  # Minimum supported rust version 
   msrv:
     runs-on: ubuntu-latest
     # we use a matrix here just because env can't be used in job names
