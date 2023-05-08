@@ -1,9 +1,12 @@
+# Githubs Tool for scanning my Cargo.toml land Cargo.lock to notify me if any updates or security risks are in need of adressing
 version: 2
 updates:
+    #If my Ci is using a Version of an outdated Github Action notify me
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: daily
+    # Check Cargo Dependencies
   - package-ecosystem: cargo
     directory: /
     schedule:
